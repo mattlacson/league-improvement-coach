@@ -1,6 +1,8 @@
 # League Improvement Coach Bot
 
 ## Overview
+(Current champs supported: Jhin, Vayne, Jinx)
+
 A personalized text-based chatbot designed to help League of Legends players improve by delivering rank-aware, champion-specific coaching and habit-focused guidance.
 
 ## Problem
