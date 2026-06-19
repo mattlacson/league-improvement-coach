@@ -1,112 +1,109 @@
 # League Improvement Coach Bot
 
-A CLI chatbot designed to help League of Legends players improve through personalized, rank-aware, champion-specific coaching.  
-Instead of dumping stats or generic tips, the bot focuses on habit-building, decision discipline, and actionable improvement plans.
+A Python command-line coaching tool designed to help League of Legends players improve through personalized, rank-aware, and champion-specific advice.
+
+Instead of focusing on raw statistics, builds, or match history data, the bot helps players build better in-game habits through simple improvement rules, focused practice goals, and post-game reflection.
 
 ## Problem
 
-Many League of Legends tools focus heavily on statistics, builds, or raw data.
-While useful, these tools often fail to address what actually holds players back:
-poor decision-making, inconsistency, tilt, and not knowing what to focus on from game to game.
+Many League of Legends tools focus heavily on statistics, champion builds, or performance data. While useful, those tools do not always explain *why* a player is struggling or what they should focus on in their next few games.
 
-Players often leave a loss knowing they played badly, but not knowing *why* or *what to change next*.
+Players often know they made mistakes after a loss, but they may not know whether the issue came from laning, midgame decisions, teamfight positioning, tilt, greed, or poor consistency.
 
 ## Solution
 
-The League Improvement Coach Bot acts as a conversational improvement coach.
-It asks players about their rank, role, champion pool, and current struggles,
-then generates a focused improvement plan tailored to their context.
+League Improvement Coach Bot acts as a lightweight improvement coach. It asks the player for their rank, role, champion pool, focus champion, biggest struggle, and improvement goal. Based on those inputs, it generates a focused coaching plan with clear rules to follow over the next set of games.
 
-The goal is not to overwhelm the player, but to give them
-2–3 clear rules to follow over their next set of games.
+The goal is to keep the advice simple and actionable rather than overwhelming the player with too much information.
 
 ## Features
 
-- Rank-aware coaching (advice adapts to player rank)
-- Champion-specific guidance (currently Jhin, Vayne, and Jinx)
-- User-selected focus champion
-- “Next 10 Games” improvement plans
-- Post-game reflection tool (`/review`)
-- Persistent player profile (`/profile`)
-- Re-runnable coaching plan (`/plan`)
-
-## Sample Conversation (below)
-
-=== League Improvement Coach Bot (CLI) ===
-
-Rank (e.g., Bronze, Silver, Gold, Platinum, Emerald, Diamond): Platinum
-Role (ADC, Top, Mid, Jungle, Support) [default ADC]: ADC
-
-Supported champs right now: Jhin, Vayne, Jinx
-Top champs (comma-separated, e.g., Jhin, Vayne, Jinx): Jhin, Vayne, Jinx
-
-Which champion are you focusing on today?
-
-Jhin
-
-Vayne
-
-Jinx
-Type the number or champion name: Jhin
-
-Biggest struggle (laning / midgame / teamfights / consistency): consistency
-Goal (fast / long-term): fast
-
---- Personalized Plan for Platinum ADC ---
-
-As a higher-elo player, your biggest gains usually come from discipline and tempo
-(avoiding low-value fights, cleaner resets, and consistent decision-making).
-
-Champion focus: Jhin
-
-Identity: Tempo & precision — burst windows and spacing.
-Win condition: Control tempo and punish mistakes; avoid extended DPS fights.
-
-Next 10 Games Focus
-
-If you miss a burst window, don’t force — reset and wait for the next one.
-
-After every 4th shot, immediately reposition.
-
-Track one engage threat and position around it every fight.
-
-Fast climb note: Keep your champion pool small and avoid testing new champions in ranked.
-
-Command (/profile, /plan, /review, /exit): /profile
-
-=== Player Profile ===
-Rank: Platinum
-Role: ADC
-Champion Pool: Jhin, Vayne, Jinx
-Focus Champion: Jhin
-Primary Struggle: Consistency
-Goal Type: Fast Climb
-
-
+* Rank-aware coaching based on player skill level
+* Champion-specific coaching for Jhin, Vayne, and Jinx
+* User-selected focus champion
+* Personalized “Next 10 Games” improvement plans
+* Post-game review tool using structured reflection questions
+* Persistent session profile with `/profile`
+* Re-runnable improvement plan with `/plan`
+* Session reset command with `/reset`
+* Fallback general ADC plan for unsupported champions
 
 ## Tech Stack
 
-- Language: Python
-- Interface: Command-line (CLI)
-- Architecture: Modular Python files with rule-based coaching templates
-- Version Control: Git & GitHub
+* **Language:** Python
+* **Interface:** Command-line Interface (CLI)
+* **Architecture:** Modular Python files
+* **Core Concepts:** Data structures, input validation, conditional logic, reusable functions, rule-based recommendation templates
+* **Version Control:** Git and GitHub
+
+## How It Works
+
+1. The user enters their rank, role, champion pool, focus champion, biggest struggle, and improvement goal.
+2. The bot builds a player profile from the user’s answers.
+3. The bot applies rank-aware coaching logic to adjust the tone and focus of the advice.
+4. If the selected champion is supported, the bot generates champion-specific advice.
+5. The user can review their profile, regenerate their plan, reset the session, or complete a post-game review.
+
+## Supported Champions
+
+* Jhin
+* Vayne
+* Jinx
+
+Each champion has its own coaching profile, including identity, win condition, common mistakes, and focus rules for laning, midgame, teamfights, and consistency.
+
+## Example Commands
+
+```text
+/profile
+```
+
+Displays the current player profile.
+
+```text
+/plan
+```
+
+Shows the current personalized improvement plan again.
+
+```text
+/review
+```
+
+Starts a post-game reflection that helps diagnose what went wrong and gives rules for the next game.
+
+```text
+/reset
+```
+
+Clears the current session and builds a new player profile.
+
+```text
+/exit
+```
+
+Ends the program.
 
 ## Design Decisions
 
-- Text-only interface was chosen to focus on logic, clarity, and coaching quality.
-- Champion pool is intentionally limited to ensure advice is specific and meaningful.
-- Coaching output prioritizes habits and rules over raw statistics.
-- Rank-awareness is used to adjust expectations and advice tone.
+* A text-only CLI interface was used to keep the project focused on logic, structure, and coaching quality.
+* The champion pool was intentionally limited so the advice could be more specific and meaningful.
+* The bot prioritizes practical decision-making rules over raw statistics.
+* Rank-aware coaching was added to make the advice feel more personalized.
+* Post-game reflection was included to help users turn losses into specific improvement goals.
 
 ## Limitations
 
-- No live Riot API integration
-- Limited champion pool
-- Advice is based on coaching heuristics, not match history data
+* No live Riot API integration
+* Limited champion and role coverage
+* Advice is based on rule-based coaching heuristics, not real match history data
+* The app currently runs only through the command line
 
 ## Future Improvements
 
-- Additional champions and roles
-- Matchup-specific advice
-- Session reset command
-- Optional web-based interface
+* Add more champions and roles
+* Add matchup-specific advice
+* Save player profiles between sessions
+* Add match-history integration using the Riot API
+* Build a web interface with Flask, Django, or React
+* Add a simple database for tracking player improvement over multiple games
