@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League Improvement Coach Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <section class="hero">
+            <h1>League Improvement Coach Bot</h1>
+            <p>
+                Generate a personalized ADC improvement plan based on your rank,
+                champion pool, focus champion, and biggest gameplay struggle.
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>Build Your Coaching Plan</h2>
+
+            <form method="POST" action="/">
+                <label for="rank">Rank</label>
+                <input
+                    type="text"
+                    id="rank"
+                    name="rank"
+                    placeholder="Example: Silver, Gold, Platinum"
+                    value="{{ profile_data.rank if profile_data else '' }}"
+                    required
+                >
+
+                <label for="role">Role</label>
+                <select id="role" name="role">
+                    <option value="ADC" selected>ADC</option>
+                </select>
+
+                <label for="champions">Champion Pool</label>
+                <input
+                    type="text"
+                    id="champions"
+                    name="champions"
+                    placeholder="Example: Draven, Jinx, Vayne"
+                    value="{{ profile_data.champions if profile_data else '' }}"
+                    required
+                >
+
+                <label for="focus_champ">Focus Champion</label>
+                <input
+                    type="text"
+                    id="focus_champ"
+                    name="focus_champ"
+                    placeholder="Example: Draven"
+                    value="{{ profile_data.focus_champ if profile_data else '' }}"
+                    required
+                >
+
+                <label for="struggle">Biggest Struggle</label>
+                <select id="struggle" name="struggle">
+                    <option value="laning" {% if profile_data and profile_data.struggle == "laning" %}selected{% endif %}>
+                        Laning
+                    </option>
+                    <option value="midgame" {% if profile_data and profile_data.struggle == "midgame" %}selected{% endif %}>
+                        Midgame
+                    </option>
+                    <option value="teamfights" {% if profile_data and profile_data.struggle == "teamfights" %}selected{% endif %}>
+                        Teamfights
+                    </option>
+                    <option value="consistency" {% if not profile_data or profile_data.struggle == "consistency" %}selected{% endif %}>
+                        Consistency
+                    </option>
+                </select>
+
+                <label for="goal">Goal</label>
+                <select id="goal" name="goal">
+                    <option value="fast" {% if not profile_data or profile_data.goal == "fast" %}selected{% endif %}>
+                        Fast Climb
+                    </option>
+                    <option value="long-term" {% if profile_data and profile_data.goal == "long-term" %}selected{% endif %}>
+                        Long-Term Improvement
+                    </option>
+                </select>
+
+                <button type="submit">Generate Plan</button>
+                <a class="secondary-link" href="/reset">Reset Session</a>
+            </form>
+        </section>
+
+        {% if plan %}
+        <section class="card result">
+            <h2>Your Coaching Plan</h2>
+            <div class="plan-output">{{ plan }}</div>
+        </section>
+
+        <section class="card">
+            <h2>Post-Game Review</h2>
+            <p class="section-description">
+                Instead of typing <strong>/review</strong>, use this form to reflect on your last game.
+            </p>
+
+            <form method="POST" action="/review">
+                <label for="review_champ">Champion Played</label>
+                <input
+                    type="text"
+                    id="review_champ"
+                    name="review_champ"
+                    placeholder="Example: Draven"
+                    value="{{ profile_data.focus_champ if profile_data else '' }}"
+                    required
+                >
+
+                <label for="phase">Where did the game start going wrong?</label>
+                <select id="phase" name="phase">
+                    <option value="laning">Laning</option>
+                    <option value="midgame">Midgame</option>
+                    <option value="teamfights">Teamfights</option>
+                </select>
+
+                <label for="death">What caused your first death?</label>
+                <select id="death" name="death">
+                    <option value="gank">Gank</option>
+                    <option value="trade">Bad Trade</option>
+                    <option value="positioning">Positioning</option>
+                    <option value="greed">Greed</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="emotion">How did you feel during the game?</label>
+                <select id="emotion" name="emotion">
+                    <option value="calm">Calm</option>
+                    <option value="focused">Focused</option>
+                    <option value="frustrated">Frustrated</option>
+                    <option value="tilted">Tilted</option>
+                    <option value="tired">Tired</option>
+                </select>
+
+                <label for="one_good">One thing you did well</label>
+                <input
+                    type="text"
+                    id="one_good"
+                    name="one_good"
+                    placeholder="Example: I farmed well under pressure"
+                >
+
+                <label for="one_fix">One thing to improve next game</label>
+                <input
+                    type="text"
+                    id="one_fix"
+                    name="one_fix"
+                    placeholder="Example: Stop chasing kills without vision"
+                >
+
+                <button type="submit">Review Game</button>
+            </form>
+        </section>
+        {% endif %}
+
+        {% if review %}
+        <section class="card result">
+            <h2>Post-Game Review Result</h2>
+            <div class="plan-output">{{ review }}</div>
+        </section>
+        {% endif %}
+
+        <section class="supported">
+            <h2>Supported ADCs</h2>
+            <p>
+                {% for champ in supported_champs %}
+                    <span>{{ champ }}</span>
+                {% endfor %}
+            </p>
+        </section>
+    </main>
+</body>
+</html>
+
